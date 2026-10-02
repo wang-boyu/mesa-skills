@@ -1,0 +1,10 @@
+schema_version: "1"
+sources:
+  - id: multi-error-source
+    kind: spreadsheet
+    locator:
+      availability: available
+      value: references/synthetic.txt
+    roles:
+      - other
+    authority: ""

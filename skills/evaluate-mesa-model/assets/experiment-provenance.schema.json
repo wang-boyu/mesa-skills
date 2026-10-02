@@ -1,0 +1,424 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/wang-boyu/mesa-skills/schemas/experiment-provenance.schema.json",
+  "title": "mesa-skills experiment provenance",
+  "description": "Version-neutral structural contract for a proportional experiment_provenance.yaml artifact.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "runs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "runs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/run"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonblank": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "locator": {
+      "type": "object",
+      "required": [
+        "availability"
+      ],
+      "properties": {
+        "availability": {
+          "enum": [
+            "available",
+            "protected",
+            "unavailable"
+          ]
+        },
+        "value": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "access_note": {
+          "$ref": "#/$defs/nonblank"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "available"
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "required": [
+              "value"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "protected",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "required": [
+              "access_note"
+            ],
+            "not": {
+              "required": [
+                "value"
+              ]
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "input": {
+      "type": "object",
+      "required": [
+        "id",
+        "locator"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "source_id": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "locator": {
+          "$ref": "#/$defs/locator"
+        }
+      },
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "required": [
+        "id",
+        "locator"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "locator": {
+          "$ref": "#/$defs/locator"
+        }
+      },
+      "additionalProperties": false
+    },
+    "derived_output": {
+      "type": "object",
+      "required": [
+        "id",
+        "derived_from",
+        "locator"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "derived_from": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonblank"
+          }
+        },
+        "locator": {
+          "$ref": "#/$defs/locator"
+        }
+      },
+      "additionalProperties": false
+    },
+    "configuration": {
+      "type": "object",
+      "required": [
+        "scenario",
+        "parameters"
+      ],
+      "properties": {
+        "scenario": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "parameters": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "environment": {
+      "type": "object",
+      "required": [
+        "description"
+      ],
+      "properties": {
+        "description": {
+          "$ref": "#/$defs/nonblank"
+        }
+      },
+      "additionalProperties": false
+    },
+    "randomness": {
+      "type": "object",
+      "required": [
+        "policy"
+      ],
+      "properties": {
+        "policy": {
+          "enum": [
+            "fixed_seed",
+            "seed_set",
+            "sampled",
+            "replayed",
+            "not_applicable"
+          ]
+        },
+        "seeds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "$ref": "#/$defs/nonblank"
+              }
+            ]
+          }
+        },
+        "description": {
+          "$ref": "#/$defs/nonblank"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "policy": {
+                "const": "fixed_seed"
+              }
+            },
+            "required": [
+              "policy"
+            ]
+          },
+          "then": {
+            "required": [
+              "seeds"
+            ],
+            "properties": {
+              "seeds": {
+                "minItems": 1,
+                "maxItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "policy": {
+                "const": "seed_set"
+              }
+            },
+            "required": [
+              "policy"
+            ]
+          },
+          "then": {
+            "required": [
+              "seeds"
+            ],
+            "properties": {
+              "seeds": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "policy": {
+                "const": "sampled"
+              }
+            },
+            "required": [
+              "policy"
+            ]
+          },
+          "then": {
+            "anyOf": [
+              {
+                "required": [
+                  "seeds"
+                ]
+              },
+              {
+                "required": [
+                  "description"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "policy": {
+                "const": "replayed"
+              }
+            },
+            "required": [
+              "policy"
+            ]
+          },
+          "then": {
+            "required": [
+              "description"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "policy": {
+                "const": "not_applicable"
+              }
+            },
+            "required": [
+              "policy"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "seeds"
+              ]
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "exclusion": {
+      "type": "object",
+      "required": [
+        "reason"
+      ],
+      "properties": {
+        "reason": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "record_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonblank"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "run": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "model_revision",
+        "configuration",
+        "environment",
+        "randomness",
+        "command",
+        "analysis_revision"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "status": {
+          "enum": [
+            "planned",
+            "running",
+            "complete",
+            "failed",
+            "blocked",
+            "incomplete"
+          ]
+        },
+        "model_revision": {
+          "$ref": "#/$defs/locator"
+        },
+        "configuration": {
+          "$ref": "#/$defs/configuration"
+        },
+        "environment": {
+          "$ref": "#/$defs/environment"
+        },
+        "randomness": {
+          "$ref": "#/$defs/randomness"
+        },
+        "command": {
+          "$ref": "#/$defs/locator"
+        },
+        "analysis_revision": {
+          "$ref": "#/$defs/locator"
+        },
+        "inputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/input"
+          }
+        },
+        "raw_outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/output"
+          }
+        },
+        "derived_outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/derived_output"
+          }
+        },
+        "exclusions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/exclusion"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

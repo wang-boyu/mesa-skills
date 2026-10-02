@@ -1,0 +1,35 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  product:
+    name: Standalone product checks
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PROJ_NETWORK: "OFF"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Prepare history-free product inputs
+        run: |
+          mkdir "$RUNNER_TEMP/mesa-skills-product"
+          cp -R README.md skills integrations tests examples requirements-dev.txt requirements-examples.txt pytest.ini .github .gitignore "$RUNNER_TEMP/mesa-skills-product/"
+      - name: Check standalone product
+        working-directory: ${{ runner.temp }}/mesa-skills-product
+        run: |
+          unset PYTHONPATH
+          python -m venv .venv
+          .venv/bin/python -m pip install -r requirements-dev.txt -r requirements-examples.txt
+          .venv/bin/python -m pip check
+          .venv/bin/python -m pytest -q -p no:cacheprovider -m "not runtime" tests
+          .venv/bin/python -m pytest -q -p no:cacheprovider -m runtime tests
+          .venv/bin/python examples/core_model.py

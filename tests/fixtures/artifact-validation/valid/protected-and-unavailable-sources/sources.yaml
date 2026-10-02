@@ -1,0 +1,20 @@
+schema_version: "1"
+sources:
+  - id: protected-synthetic-input
+    kind: dataset
+    locator:
+      availability: protected
+      access_note: Available only inside the synthetic access-controlled test boundary.
+    roles:
+      - input_data
+    authority: Supplies protected synthetic initialization values.
+    confidentiality_note: Do not copy the underlying synthetic records into public artifacts.
+  - id: unavailable-synthetic-report
+    kind: report
+    locator:
+      availability: unavailable
+      access_note: The synthetic report is intentionally absent from this fixture.
+    roles:
+      - conceptual_model
+    authority: Describes a deliberately unavailable comparison assumption.
+    redistribution_note: Preserve only this non-sensitive metadata record.

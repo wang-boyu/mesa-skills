@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/wang-boyu/mesa-skills/schemas/sources.schema.json",
+  "title": "mesa-skills source inventory",
+  "description": "Version-neutral structural contract for a proportional sources.yaml artifact.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "sources"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonblank": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "locator": {
+      "type": "object",
+      "required": [
+        "availability"
+      ],
+      "properties": {
+        "availability": {
+          "enum": [
+            "available",
+            "protected",
+            "unavailable"
+          ]
+        },
+        "value": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "access_note": {
+          "$ref": "#/$defs/nonblank"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "available"
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "required": [
+              "value"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "protected",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "required": [
+              "access_note"
+            ],
+            "not": {
+              "required": [
+                "value"
+              ]
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "hash": {
+      "type": "object",
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "enum": [
+            "sha256",
+            "sha512",
+            "blake2b"
+          ]
+        },
+        "value": {
+          "$ref": "#/$defs/nonblank"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "locator",
+        "roles",
+        "authority"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "kind": {
+          "enum": [
+            "paper",
+            "report",
+            "source_model",
+            "code_repository",
+            "dataset",
+            "reference_output",
+            "documentation",
+            "user_statement",
+            "other"
+          ]
+        },
+        "locator": {
+          "$ref": "#/$defs/locator"
+        },
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "research_intent",
+              "modeling_decision",
+              "conceptual_model",
+              "implementation_reference",
+              "input_data",
+              "comparison_evidence",
+              "api_guidance",
+              "other"
+            ]
+          }
+        },
+        "authority": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "version": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "commit": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "hash": {
+          "$ref": "#/$defs/hash"
+        },
+        "license_note": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "redistribution_note": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "confidentiality_note": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "notes": {
+          "$ref": "#/$defs/nonblank"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,42 @@
+schema_version: "1"
+runs:
+  - id: synthetic-evaluation-run-001
+    status: complete
+    model_revision:
+      availability: available
+      value: revision-synthetic-001
+    configuration:
+      scenario: baseline
+      parameters:
+        population: 12
+        duration: 8
+    environment:
+      description: Generic deterministic test environment with no Mesa dependency.
+    randomness:
+      policy: fixed_seed
+      seeds:
+        - 1729
+    command:
+      availability: available
+      value: python model.py --scenario baseline --seed 1729
+    analysis_revision:
+      availability: available
+      value: analysis-synthetic-001
+    inputs:
+      - id: comparison-input
+        source_id: synthetic-comparison-data
+        locator:
+          availability: available
+          value: data/synthetic-observations.csv
+    raw_outputs:
+      - id: raw-agent-counts
+        locator:
+          availability: available
+          value: outputs/raw-agent-counts.csv
+    derived_outputs:
+      - id: summary-agent-counts
+        derived_from:
+          - raw-agent-counts
+        locator:
+          availability: available
+          value: outputs/summary-agent-counts.csv

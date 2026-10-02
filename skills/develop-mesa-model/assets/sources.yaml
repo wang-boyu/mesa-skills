@@ -1,0 +1,24 @@
+# Copy this file only when source materials need tracking. Replace every
+# `replace-...` value before use; optional fields may be removed.
+# Available locators require a value and may add a nonblank access_note about
+# access to the underlying artifact. Protected or unavailable locators omit the
+# value and require a nonblank access_note.
+schema_version: "1"
+sources:
+  - id: replace-with-stable-source-id
+    kind: other
+    locator:
+      availability: unavailable
+      access_note: replace-with-a-non-sensitive-access-or-absence-note
+    roles:
+      - other
+    authority: replace-with-the-declared-authority-for-the-relevant-claim
+    # version: replace-with-version-or-revision-when-useful
+    # commit: replace-with-commit-identifier-when-useful
+    # hash:
+    #   algorithm: sha256
+    #   value: replace-with-hash-when-justified
+    # license_note: replace-with-known-license-information
+    # redistribution_note: replace-with-applicable-redistribution-boundary
+    # confidentiality_note: replace-with-a-non-sensitive-access-boundary
+    # notes: replace-with-other-material-context

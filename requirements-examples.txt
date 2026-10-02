@@ -1,0 +1,3 @@
+# Optional direct runtime examples and tests; install only in a project environment.
+Mesa[rec]==3.5.0
+Mesa-Geo==0.9.3

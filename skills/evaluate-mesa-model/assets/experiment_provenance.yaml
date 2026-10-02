@@ -1,0 +1,53 @@
+# Replace every `replace-...` value before use. Optional collections may be
+# omitted when they do not apply. Protected values use an access note instead
+# of copied content.
+# Available locators require a value and may add a nonblank access_note about
+# access to the underlying artifact. Protected or unavailable locators omit the
+# value and require a nonblank access_note.
+schema_version: "1"
+runs:
+  - id: replace-with-stable-run-id
+    status: planned
+    model_revision:
+      availability: unavailable
+      access_note: replace-with-model-revision-status
+    configuration:
+      scenario: replace-with-scenario-id
+      parameters: {}
+    environment:
+      description: replace-with-reproducible-environment-description
+    randomness:
+      # fixed_seed uses exactly one seed; seed_set uses one or more. sampled
+      # requires seeds, a description, or both. replayed requires a description
+      # and may include seeds. not_applicable omits seeds.
+      policy: not_applicable
+    command:
+      availability: unavailable
+      access_note: replace-with-command-or-entry-point-status
+    analysis_revision:
+      availability: unavailable
+      access_note: replace-with-analysis-revision-status
+    # inputs:
+    #   - id: replace-with-input-id
+    #     source_id: replace-with-id-from-sources-yaml
+    #     locator:
+    #       availability: protected
+    #       access_note: replace-with-non-sensitive-access-boundary
+    # raw_outputs:
+    #   - id: replace-with-raw-output-id
+    #     locator:
+    #       availability: available
+    #       value: replace-with-output-path
+    #       access_note: replace-with-optional-underlying-artifact-access-note
+    # derived_outputs:
+    #   - id: replace-with-derived-output-id
+    #     derived_from:
+    #       - replace-with-raw-or-derived-output-id
+    #     locator:
+    #       availability: available
+    #       value: replace-with-derived-output-path
+    #       access_note: replace-with-optional-underlying-artifact-access-note
+    # exclusions:
+    #   - reason: replace-with-exclusion-reason
+    #     record_ids:
+    #       - replace-with-excluded-record-id

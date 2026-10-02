@@ -1,0 +1,33 @@
+schema_version: "1"
+runs:
+  - id: cyclic-lineage-run
+    status: complete
+    model_revision:
+      availability: available
+      value: revision-001
+    configuration:
+      scenario: baseline
+      parameters: {}
+    environment:
+      description: Synthetic lineage test environment.
+    randomness:
+      policy: not_applicable
+    command:
+      availability: available
+      value: python model.py
+    analysis_revision:
+      availability: available
+      value: analysis-001
+    derived_outputs:
+      - id: cyclic-output-a
+        derived_from:
+          - cyclic-output-b
+        locator:
+          availability: available
+          value: outputs/cyclic-a.csv
+      - id: cyclic-output-b
+        derived_from:
+          - cyclic-output-a
+        locator:
+          availability: available
+          value: outputs/cyclic-b.csv

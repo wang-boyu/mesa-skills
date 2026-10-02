@@ -1,0 +1,12 @@
+schema_version: "1"
+sources:
+  - id: synthetic-comparison-data
+    kind: dataset
+    locator:
+      availability: available
+      value: data/synthetic-observations.csv
+    roles:
+      - input_data
+      - comparison_evidence
+    authority: Supplies synthetic comparison values only.
+    license_note: Synthetic public-domain test data.

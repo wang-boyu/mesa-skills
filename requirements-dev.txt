@@ -1,0 +1,4 @@
+pytest>=8,<10
+PyYAML>=6,<7
+# Exercised optional source/provenance utilities.
+jsonschema>=4.21,<5

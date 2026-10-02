@@ -1,0 +1,161 @@
+schema_version: "1"
+runs:
+  - id: fixed-seed-planned-run
+    status: planned
+    model_revision:
+      availability: available
+      value: revision-001
+    configuration:
+      scenario: fixed-seed
+      parameters: {}
+    environment:
+      description: Synthetic randomness-policy environment.
+    randomness:
+      policy: fixed_seed
+      seeds:
+        - 11
+    command:
+      availability: available
+      value: python model.py
+    analysis_revision:
+      availability: available
+      value: analysis-001
+  - id: seed-set-running-run
+    status: running
+    model_revision:
+      availability: available
+      value: revision-001
+    configuration:
+      scenario: seed-set
+      parameters: {}
+    environment:
+      description: Synthetic randomness-policy environment.
+    randomness:
+      policy: seed_set
+      seeds:
+        - 11
+        - 29
+    command:
+      availability: available
+      value: python model.py
+    analysis_revision:
+      availability: available
+      value: analysis-001
+  - id: sampled-seeds-complete-run
+    status: complete
+    model_revision:
+      availability: available
+      value: revision-001
+    configuration:
+      scenario: sampled-seeds
+      parameters: {}
+    environment:
+      description: Synthetic randomness-policy environment.
+    randomness:
+      policy: sampled
+      seeds:
+        - sample-batch-001
+    command:
+      availability: available
+      value: python model.py
+    analysis_revision:
+      availability: available
+      value: analysis-001
+  - id: sampled-description-failed-run
+    status: failed
+    model_revision:
+      availability: available
+      value: revision-001
+    configuration:
+      scenario: sampled-description
+      parameters: {}
+    environment:
+      description: Synthetic randomness-policy environment.
+    randomness:
+      policy: sampled
+      description: Seeds are recorded by the synthetic external sampler ledger.
+    command:
+      availability: available
+      value: python model.py
+    analysis_revision:
+      availability: available
+      value: analysis-001
+  - id: sampled-seeds-and-description-blocked-run
+    status: blocked
+    model_revision:
+      availability: available
+      value: revision-001
+    configuration:
+      scenario: sampled-seeds-and-description
+      parameters: {}
+    environment:
+      description: Synthetic randomness-policy environment.
+    randomness:
+      policy: sampled
+      seeds:
+        - sample-batch-002
+      description: Synthetic sampler ledger and replay key are both retained.
+    command:
+      availability: available
+      value: python model.py
+    analysis_revision:
+      availability: available
+      value: analysis-001
+  - id: replayed-description-incomplete-run
+    status: incomplete
+    model_revision:
+      availability: available
+      value: revision-001
+    configuration:
+      scenario: replayed-description
+      parameters: {}
+    environment:
+      description: Synthetic randomness-policy environment.
+    randomness:
+      policy: replayed
+      description: Replays the synthetic ledger identified as replay-001.
+    command:
+      availability: available
+      value: python model.py
+    analysis_revision:
+      availability: available
+      value: analysis-001
+  - id: replayed-description-and-seeds-complete-run
+    status: complete
+    model_revision:
+      availability: available
+      value: revision-001
+    configuration:
+      scenario: replayed-description-and-seeds
+      parameters: {}
+    environment:
+      description: Synthetic randomness-policy environment.
+    randomness:
+      policy: replayed
+      seeds:
+        - replay-key-001
+      description: Replays the synthetic ledger and retains its seed key.
+    command:
+      availability: available
+      value: python model.py
+    analysis_revision:
+      availability: available
+      value: analysis-001
+  - id: not-applicable-complete-run
+    status: complete
+    model_revision:
+      availability: available
+      value: revision-001
+    configuration:
+      scenario: deterministic
+      parameters: {}
+    environment:
+      description: Synthetic randomness-policy environment.
+    randomness:
+      policy: not_applicable
+    command:
+      availability: available
+      value: python model.py
+    analysis_revision:
+      availability: available
+      value: analysis-001
