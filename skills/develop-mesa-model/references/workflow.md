@@ -64,6 +64,11 @@ Every return states work performed, changed paths if any, commands actually run
 and outcomes (including failures/skips), located findings and their consequences,
 open questions and limits. Reviewers return findings in their response, not by
 editing the target. The parent can retain a short disposition note when useful.
+Assignments carry the applicable [implementation](implementation.md) and
+[project setup](project-setup.md) criteria: meaningful structure, headless and
+observation boundaries, authored-file quality coverage, fresh run/export
+destinations, retained replay checks and bounded scale evidence. These are model
+development details within the roles below, not additional roles or reports.
 
 | Role / activation | Inputs and allowed outputs | Prohibited actions and expected return |
 |---|---|---|
@@ -90,6 +95,9 @@ or parent self-review substitute.
 2. The worker makes a bounded change and runs applicable owner-side checks;
    QA independently supplies tests and checks observable behavior. Conditional
    source/geographic review supplements, never replaces, the primary checker.
+   Each author owns quality fixes on their assigned files, explicitly including
+   authored untracked files; inspect lint fixes before formatting and rerun
+   affected checks. Reviewers and non-authoring verifiers do not auto-fix.
 3. The parent accepts/rejects each finding with a reason and identifies its
    owner. Production defects return to worker; test/fixture defects to QA;
    authority questions to clarification. A finding is not permission to change
@@ -120,6 +128,13 @@ is not independent review. Accepted outer findings return to clarification or th
 inner owner; then rerun affected inner checks, independent rechecks, final
 verification and a fresh outer re-review. A final checklist alone is not this
 return path. A genuinely clean first pass can finish without invented findings.
+
+Integrated evidence includes relevant rule and replay checks, fresh output
+preservation, quality checks covering the intended authored files, and staged
+execution limits. A short requested-scale smoke run uses the same production
+implementation and preserves requested defaults; smaller overrides are labeled.
+If runtime or retained-history memory exceeds authorized resources, state the
+unverified scale rather than turning verification into a long experiment.
 
 Stop at task-specific resource/iteration limits; any diagnostic rerun must have
 a reason and remaining authority. Report `complete` only when requested work,
