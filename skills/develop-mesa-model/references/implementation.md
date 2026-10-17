@@ -52,22 +52,33 @@ by the intended analysis; final aggregates cannot recover an unrecorded
 trajectory. Choose public space and collection APIs that match the model and
 installed release; inspect warnings instead of suppressing unfamiliar ones.
 
-## Preserve behavior during refactoring
+## Structure the model
 
-Give production and QA owners the structure target before work. For a
-nontrivial model, a useful starting layout is:
+Give production and QA owners the structure target before work. For a new
+standalone model, prefer a model-named computational package and a root-level
+`app.py` when a Solara UI is requested:
 
 ```text
-project/
-|-- agents.py              agent state, decisions and interactions
-|-- model.py               initialization, activation, shared state and services
-|-- app.py                 optional UI composition and portrayal
-`-- tests/                 independent behavioral and regression checks
+woodland-model/
+|-- README.md              setup, scientific context and relative run commands
+|-- app.py                 requested Solara entry point
+|-- woodland/
+|   |-- __init__.py
+|   |-- agents.py          agent state, decisions and interactions
+|   `-- model.py           initialization, activation and shared model services
+|-- tests/                 independent behavioral and regression checks
+|-- .pre-commit-config.yaml
+|-- .codespellignore
+`-- ruff.toml
 ```
 
-This is an illustration, not a scaffold to create automatically. Use agent.py
-for one agent implementation, agents.py for a cohesive set, or an agents/
-package when types or responsibilities justify it. model.py coordinates stages,
+This illustrates responsibilities; add appropriate dependency declarations and
+only useful modules. Use agent.py for one agent implementation, agents.py for a
+cohesive set, or an agents/ package when types or responsibilities justify it.
+Do not default to a `src/` layout or additional subpackages merely because
+several files exist. Use them when actual packaging needs or substantial
+responsibility groups warrant them. Preserve a meaningful existing layout
+unless restructuring is part of the task. model.py coordinates stages,
 model-level processes, global state, stopping and collection. Agents may call
 public model services for shared resources, environment queries or coordinated
 interactions; responsibility and source fidelity determine the boundary, not a
@@ -77,15 +88,16 @@ Preserve established meaningful conventions. A small explicitly requested
 teaching snippet may remain in one file; it is not an exception for a substantial
 agent/model/UI/analysis system.
 
-Add app.py only when UI is required. It wires presentation to public model APIs
-and does not duplicate scientific rules. Importing the computational model must
+Add root app.py only when UI is required. It wires presentation to public model
+APIs and can delegate substantial portrayal work to a focused module; neither
+should duplicate scientific rules. Importing the computational model must
 not start a UI server, require UI-only dependencies, or run a simulation. Keep
 server/simulation execution behind explicit entry points. Visualizers observe
 state without modifying it or consuming model randomness; test repeated portrayal
 against state and random-stream preservation, not just rendered appearance.
 
 Add space.py for substantial environment/spatial operations, processes.py for
-cohesive shared or model-level processes, data.py for meaningful input preparation,
+cohesive shared or model-level processes, inputs.py for meaningful input preparation,
 metrics.py for observations, visualization.py for portrayal, experiments.py for
 run orchestration, or analysis.py for statistical analysis only when those
 responsibilities warrant a separate module. Separate meaningful raw-input
@@ -97,6 +109,12 @@ long multipurpose methods and deeply nested rules. Use meaningful names,
 focused comments/docstrings and useful type hints without needless abstractions
 or one-function-per-file fragmentation. Explain the chosen boundaries in a
 short existing project note, not empty scaffold files.
+
+Use [project setup guidance](project-setup.md) for quality configuration, fresh
+result destinations and portable commands. These are ordinary model-project
+defaults, not an instruction to restructure another project's established tools.
+
+## Preserve behavior during refactoring
 
 Before production restructuring, independent QA characterizes interfaces, state transitions, activation
 order, random draw order, initialization, observables, and stopping. Save small
@@ -118,3 +136,40 @@ fidelity and evidence for all three criteria even when tests pass. A cosmeticall
 split or monolithic design returns to the worker; a missing or invalid regression returns to QA. Apply the
 [workflow's correction and re-review sequence](workflow.md), preserving the
 baseline and scientific target rather than weakening expectations to obtain a pass.
+
+## Retain meaningful replay checks
+
+For a stochastic model whose contract expects seeded replay, normally retain
+one small integrated regression. Independently construct two models with the
+same inputs, parameters, seed and environment, advance each through several
+meaningful transitions, and compare relevant scientific states, events or
+observations at those transitions. Use a case that exercises the actual rules;
+an unchanged trajectory is not useful evidence for an evolving model.
+
+When observation or presentation exists, invoke it in only one of the two runs
+to check trajectory neutrality. Check relevant state and random-stream
+preservation directly where useful. Keep independent hand-checkable rule tests:
+two identical runs can reproduce the same bug. Use justified numerical
+tolerances, exclude incidental paths/timestamps, and avoid large golden exports
+or mandatory full-scale replay. Variation across seeds, sensitivity,
+calibration, uncertainty and empirical assessment remain evaluation work.
+
+## Increase execution scale in stages
+
+Start with small mechanism tests, then small integrated runs, then a short
+smoke run at the requested scale within the agreed resources. Use the same
+production implementation throughout. Small development overrides must retain
+the relevant interactions, boundaries, movement, replacement or other requested
+mechanisms; label their parameter differences explicitly.
+
+Implementing mechanisms progressively and increasing population size are
+different activities. The finished model retains the requested mechanisms and
+parameter defaults. Do not silently change density, topology, scientific rules
+or required observations to obtain a pass. Before larger execution, estimate
+runtime and memory, including retained agent histories and collected outputs.
+Use an explicit short duration or step bound for the smoke run.
+
+If requested-scale verification exceeds authorized resources, report that scale
+as unverified and identify the needed resource decision. Do not launch an
+unapproved long run, claim a smaller run proves scale readiness, or automatically
+redesign storage. Long experiments and parameter sweeps belong to evaluation.
