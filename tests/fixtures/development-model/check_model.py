@@ -3,6 +3,7 @@
 import copy
 import subprocess
 import sys
+from pathlib import Path
 
 from transfer import TransferModel
 
@@ -54,10 +55,13 @@ def test_repeated_exports_preserve_prior_result(tmp_path):
 
 
 def test_computational_import_is_headless_and_does_not_run(tmp_path):
+    outputs = tmp_path / "outputs"
+    result = outputs / "run-0001" / "observations.json"
     script = """
 import importlib.abc
 import sys
-from pathlib import Path
+
+sys.path.insert(0, sys.argv[1])
 
 class RejectUI(importlib.abc.MetaPathFinder):
     def find_spec(self, fullname, path, target=None):
@@ -72,15 +76,28 @@ def reject_construction(*args, **kwargs):
 
 mesa.Model.__init__ = reject_construction
 from transfer import TransferModel
-assert not Path('outputs').exists()
 assert not any(name.startswith('solara') for name in sys.modules)
 """
-    checked = subprocess.run(
-        [sys.executable, "-c", script],
-        capture_output=True,
-        text=True,
-        timeout=15,
-        check=False,
-    )
-    assert checked.returncode == 0, checked.stderr
-    assert checked.stdout == checked.stderr == ""
+    for previous_result in (False, True):
+        if previous_result:
+            result.parent.mkdir(parents=True)
+            result.write_bytes(b"previous result\n")
+        before = {
+            path.relative_to(outputs): path.read_bytes() if path.is_file() else None
+            for path in outputs.rglob("*")
+        }
+        checked = subprocess.run(
+            [sys.executable, "-c", script, str(Path(__file__).resolve().parent)],
+            cwd=tmp_path,
+            capture_output=True,
+            text=True,
+            timeout=15,
+            check=False,
+        )
+        assert checked.returncode == 0, checked.stderr
+        assert checked.stdout == checked.stderr == ""
+        assert outputs.exists() == previous_result
+        assert {
+            path.relative_to(outputs): path.read_bytes() if path.is_file() else None
+            for path in outputs.rglob("*")
+        } == before

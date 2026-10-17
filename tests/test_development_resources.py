@@ -192,4 +192,16 @@ def test_small_model_replays_rules_observation_and_portable_outputs(model_projec
     assert json.loads((second_path / "observations.json").read_text()) == json.loads(
         first_bytes
     )
+    outputs = model_project / "outputs"
+    before = {
+        path.relative_to(outputs): path.read_bytes() if path.is_file() else None
+        for path in outputs.rglob("*")
+    }
+    repeated = run_model(model_project, "-m", "pytest", "-q", "-p", "no:cacheprovider")
+    assert repeated.returncode == 0, repeated.stdout + repeated.stderr
+    assert "4 passed" in repeated.stdout
+    assert {
+        path.relative_to(outputs): path.read_bytes() if path.is_file() else None
+        for path in outputs.rglob("*")
+    } == before
     assert not list(model_project.rglob("__pycache__"))
