@@ -217,8 +217,13 @@ def test_complete_actual_packages_preserve_other_content_and_work_without_source
     success(result)
     for path in (client.skills(homes), client.agents(homes)):
         assert str(path) in result.stdout
-    for skill in SKILLS:
-        assert f"{skill}: Experimental 0.1.0" in result.stdout
+    expected_versions = {
+        "develop-mesa-model": "0.2.0",
+        "document-abm-with-odd": "0.1.0",
+        "evaluate-mesa-model": "0.1.0",
+    }
+    for skill, version in expected_versions.items():
+        assert f"{skill}: Experimental {version}" in result.stdout
     assert "session" in result.stdout.lower()
     assert_payload(product, homes, client)
     assert {p.name for p in client.skills(homes).iterdir()} == set(SKILLS) | {"another"}
