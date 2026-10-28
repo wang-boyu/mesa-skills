@@ -87,13 +87,19 @@ owner. No schema or native named-agent installation is required for a handoff.
 Activate as the writable maker for substantive planning, authorized bounded
 execution or reanalysis; never for audit-only. Input is the agreed design,
 public model interface, inspected executable sources, original evidence and
-accepted findings. Write only assigned plans, experiment/analysis code,
-authorized outputs, provenance and reports, including owner-side checks and
-in-scope auto-fixes. Planning runs no simulations or fitting; reanalysis uses
+accepted findings. Write only assigned plans, experiment/analysis/plotting code,
+authorized outputs, figures, provenance and reports, including owner-side checks
+and in-scope auto-fixes. Planning runs no simulations or fitting; reanalysis uses
 existing raw outputs and separate derived paths, with no model simulations.
 Neither mode needs model imports to perform its work. Execution performs only
 agreed runs and retains failed attempts. Return changed paths, design and
 provenance, attempts/results, checks, limitations and unresolved findings.
+
+For quantitative work, own the Python modules, static figures and single
+Markdown narrative described in [visual reporting](visual-reporting.md).
+Keep plotting separate from estimation and read saved analysis inputs without
+model imports or hidden reruns. Inspect project tooling and perform author checks
+only on assigned files using [scoped quality guidance](project-quality.md).
 
 Do not edit production rules, production tests, source data, existing raw
 evidence or ODD documents, duplicate rules in experiment code, exceed agreed
@@ -124,6 +130,10 @@ run accounting, failures, exclusions, formulas, denominators, physical units,
 nonfinite/missing values, uncertainty and interpretation. Derive important
 expectations with independent arithmetic/formulas or known-answer cases from
 raw evidence; a call to the maker's function is not an independent oracle.
+Compare plotted estimates and interval endpoints, labels and narrative claims
+with saved inputs and the agreed analysis. Inspect rendered figures for
+readability, clipping, scales and honest coverage. Review quality-check outcomes
+without applying fixes; the maker owns regeneration and artifact-changing checks.
 Return located findings, acceptance expectations, reproducibility limitations
 and what conclusions the evidence can support. Do not fix and approve your
 own correction, settle an unanswered scientific choice, or replace material
@@ -159,11 +169,13 @@ Non-geographic work needs neither this role nor geographic references.
 ## Writable inner loop
 
 1. The maker produces the agreed plan, executes only the agreed bounded runs,
-   or reanalyzes existing outputs, then performs applicable owner-side checks.
+   or reanalyzes existing outputs, then performs applicable scoped owner checks
+   on code, documents and visual artifacts.
    Preserve originals, failed attempts, unfavorable results and required raw
    observations; planning produces no fabricated run evidence.
 2. A separate read-only analyst reviews design, calculations, accounting and
-   claims. Material geography also receives independent specialist review.
+   claims, including figures and their saved inputs. Material geography also
+   receives independent specialist review.
 3. The parent disposes findings. Accepted evaluation artifact defects return to
    `experiment_designer`; checker evidence gaps return to the analyst/intake;
    source-authority questions return to clarification or `model_spec_analyst`.
@@ -179,9 +191,9 @@ Non-geographic work needs neither this role nor geographic references.
 
 ## Final verification, inference and outer loop
 
-After inner work is reconciled, run applicable final repository, numerical,
-run-accounting, reproducibility and protected-input checks. Check current
-artifacts, not just an earlier maker result. Test/reproduction execution may
+After inner work is reconciled, run applicable final scoped quality, numerical,
+run-accounting, reproducibility, rendered-figure and protected-input checks.
+Check current artifacts, not just an earlier maker result. Test/reproduction execution may
 write outputs or caches; inspect commands and keep those in declared locations.
 The maker owns artifact-changing checks and fixes. If a final command modifies
 the artifact being reviewed, return to owner correction, affected checks and
@@ -194,13 +206,14 @@ inner checker to these two explicit functions; one fresh context may do both:
 
 - **Inference review:** what follows from the actual design and evidence?
   Examine unsupported certainty, dependence, leakage, exclusions, seed/metric
-  selection, weak convergence and unperformed work presented as observations.
+  selection, weak convergence and unperformed work presented as observations,
+  including what the integrated visual report communicates or obscures.
 - **Outer scope/evidence review:** does the integrated result respect user
   intent, source authority, model/report agreement, maintainable experiment
-  structure across actual model/runner/data/metrics/analysis interfaces,
+  structure across actual model/runner/data/metrics/analysis/plotting interfaces,
   headless imports, baseline preservation and state/RNG-neutral observation,
-  ownership, changed paths, protected inputs, unrelated work, missing requirements
-  and bounded conclusions?
+  ownership, changed paths, protected inputs, unrelated work, missing requirements,
+  relative figure links, regeneration instructions and bounded conclusions?
 
 The parent coordinates and disposes these findings but cannot certify its own
 integration as independent. Accepted findings from either final review return
@@ -213,8 +226,9 @@ finding. Renaming the same effective context does not make it independent.
 
 ## Audit-only evidence loop
 
-No maker, simulations or target correction. The parent preserves supplied
-model, data, raw outputs, report and unrelated work; takes in evidence; assigns
+No maker, simulations, quality-configuration additions or target correction.
+Do not run auto-fixers or regenerate the target's figures. The parent preserves
+supplied model, data, raw outputs, report and unrelated work; takes in evidence; assigns
 the independent read-only analyst and applicable conditional reviewers; then
 disposes findings. Evidence gaps return to intake, the analyst, specialist or
 source clarification for reconciliation and independent recheck. They cannot

@@ -6,7 +6,7 @@ description: >-
   uncertainty, purpose-specific assessment and replication fidelity, including
   material geography. Production-model changes and ODD authoring are separate tasks.
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
   maturity: "experimental"
 ---
 
@@ -27,9 +27,9 @@ bounded assignments. A delegated child handles its assigned slice and returns;
 it does not restart this skill or recursively create a team.
 
 - `experiment_designer` is the writable maker for authorized evaluation plans,
-  experiment/analysis code, derived outputs and reports. Planning, execution
-  and reanalysis each require a separate read-only `evaluation_analyst` to check
-  design, run accounting, calculations and interpretation.
+  experiment/analysis/plotting code, derived outputs, figures and reports.
+  Planning, execution and reanalysis each require a separate read-only
+  `evaluation_analyst` to check design, run accounting, calculations and interpretation.
 - Audit-only uses `evaluation_analyst` for independent evidence review, with
   no maker or correction of the protected model, data or report.
 - Read-only `model_spec_analyst` supplies material source/model-authority
@@ -41,14 +41,11 @@ it does not restart this skill or recursively create a team.
   One fresh context may cover both only when it reports both functions
   explicitly. Audit-only reviews the audit's conclusions and coverage.
 
-The parent clarifies the contract before dependent work. The inner loop is
-maker work → applicable checks → independent findings → parent disposition →
-accepted corrections to the owner → affected checks and independent recheck.
-Audit-only instead loops through evidence intake, review, disposition and
-clarification/recheck. After final integrated checks, fresh inference and outer
-reviews can return findings to clarification or the responsible inner role;
-affected checks and independent rechecks, final checks, and fresh final reviews
-must then run again. A clean first pass needs no manufactured finding.
+The parent clarifies the contract before dependent work and disposes findings.
+Follow the workflow's owner correction and independent recheck paths, including
+returns from fresh final reviews. Audit-only returns through evidence intake
+and clarification without target correction. A clean first pass needs no
+manufactured finding.
 
 A small explanation or read-only clarification may need no team; substantive
 evaluation plans, execution, reanalysis and complete audits require independent
@@ -89,6 +86,11 @@ Use the optional [metadata reporter](references/environment-metadata.md) when
 a small environment record helps; existing adequate information or normal
 Python/pip inspection is also sufficient.
 
+Before authoring code or reports, inspect existing project quality tools and use
+the [scoped quality setup and checks](references/project-quality.md). This skill
+bundles its own baseline; the development skill is not required. Setup and
+formatting do not expand experiment authority.
+
 ## Design evidence for the question
 
 Write a short design, using the optional [plan](assets/evaluation_plan.md)
@@ -101,6 +103,8 @@ when helpful. State:
 3. Metrics, missing/nonfinite-value treatment, exclusions, comparison tolerances,
    uncertainty methods, required observations and stopping or budget limits.
 4. Which data and choices are for calibration and which are for assessment.
+5. Useful proposed visual outputs, their required saved inputs and how the
+   report will communicate uncertainty, coverage and limitations.
 
 Choose from [evaluation methods](references/evaluation-methods.md) where
 relevant. Verification asks whether implementation follows its specification;
@@ -139,6 +143,14 @@ raw-to-derived transformations inspectable; avoid mutable globals, circular
 imports, long multipurpose functions and cosmetic or empty module splits.
 Explain a nontrivial chosen layout briefly in existing project notes.
 
+For substantive quantitative work, normally deliver reusable Python analysis
+and plotting under `evaluation/`, one Markdown narrative under `docs/`, and
+selected static figures under `docs/figures/`, preserving meaningful existing
+layouts. Read [visual reporting](references/visual-reporting.md) for saved-input
+plotting, statistical fidelity, Seaborn styling and regeneration. Use no notebooks
+or dashboard. Planning proposes visuals without results; audit-only stays
+read-only, and small or evidence-limited tasks need not manufacture charts.
+
 Record practical provenance: model and analysis revision, input identities and
 origins, relevant environment, commands, parameters, seeds, attempts, failures,
 exclusions and output locations. A small table or run log is often sufficient;
@@ -165,7 +177,9 @@ Have the independent analyst derive expectations from the design and raw
 evidence, using a separate formula or simple known-answer example; calling the
 maker's function to assert its own result is insufficient. Check denominators,
 sampling units, physical units, nonfinite values and
-uncertainty assumptions. The optional [summary helper](references/run-summary.md)
+uncertainty assumptions, plus plotted values, interval endpoints, labels and
+claims against saved inputs. Inspect rendered figures for readability and
+misleading scales. The optional [summary helper](references/run-summary.md)
 calculates mean, sample standard deviation and standard error from independent
 run summaries; it neither establishes independence nor runs a model.
 
@@ -179,10 +193,12 @@ authorized safe copy; do not silently transition into correction.
 
 Use the optional [report](assets/evaluation_report.md) to explain what was
 actually done, results including failures and unfavorable findings, uncertainty,
-limitations, changed files and unfinished work. Distinguish a completed audit
-from a correct audited report, and a reproducible calculation from scientifically
-adequate evidence. Bound every conclusion to the model, question, design and
-observations actually examined.
+limitations, changed files and unfinished work. Embed selected figures with
+relative links and document actual regeneration inputs and commands. Fresh
+inference and outer review cover the integrated report. Distinguish a completed
+audit from a correct audited report, and a reproducible calculation from
+scientifically adequate evidence. Bound every conclusion to the model, question,
+design and observations actually examined.
 Return `complete` only when the authorized outcome, required checks, inner
 rechecks, inference review and outer review are complete. An audit may complete
 with evidence-backed target defects, but missing required inspection is not a
