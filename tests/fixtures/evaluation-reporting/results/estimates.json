@@ -1,0 +1,5 @@
+[
+  {"scenario": "Reference", "estimate": 0, "lower": -1, "upper": 1, "n": 8, "planned": 8},
+  {"scenario": "Lower", "estimate": -2, "lower": -3, "upper": -0.5, "n": 6, "planned": 8},
+  {"scenario": "Unavailable", "estimate": null, "lower": null, "upper": null, "n": 0, "planned": 8}
+]

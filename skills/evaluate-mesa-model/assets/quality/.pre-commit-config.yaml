@@ -1,0 +1,25 @@
+# Adapt exclusions to actual protected inputs, production code and outputs.
+exclude: >-
+  (?x)(^|/)(data|datasets|inputs|raw|third_party|third-party|vendor|outputs|results|generated|figures|\.venv|venv|build|dist)(/|$)
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.1
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+        types_or: [python, pyi]
+      - id: ruff-format
+        types_or: [python, pyi]
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
+    hooks:
+      - id: codespell
+        args: [--ignore-words=.codespellignore]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml

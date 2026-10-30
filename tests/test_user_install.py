@@ -220,7 +220,7 @@ def test_complete_actual_packages_preserve_other_content_and_work_without_source
     expected_versions = {
         "develop-mesa-model": "0.2.0",
         "document-abm-with-odd": "0.1.0",
-        "evaluate-mesa-model": "0.1.0",
+        "evaluate-mesa-model": "0.2.0",
     }
     for skill, version in expected_versions.items():
         assert f"{skill}: Experimental {version}" in result.stdout

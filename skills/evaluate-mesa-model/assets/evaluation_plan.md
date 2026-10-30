@@ -33,6 +33,20 @@ evidence:
 Document configuration ranges rather than only selected values. Identify raw
 and derived outputs separately and state how run provenance will be recorded.
 
+## Proposed outputs and checks
+
+For quantitative work, describe useful proposed views and the questions they
+answer, required saved analysis inputs, units, uncertainty type, sampling units
+and how incomplete coverage will be shown. Planning produces no observed
+results or invented figures. Small or non-quantitative work may need no charts.
+
+Identify the reusable Python analysis/plotting modules, one Markdown narrative
+and selected static figure destinations using the project's existing layout
+or `evaluation/`, `docs/` and `docs/figures/`. Do not introduce notebooks or a
+dashboard. State the intended regeneration route and input-access limitations.
+Record applicable existing quality checks and owned paths, any authorized
+setup needed, and independent numerical and rendered-figure review.
+
 ## Interpretation rules
 
 Define how results will be interpreted, including what would weaken a claim,
